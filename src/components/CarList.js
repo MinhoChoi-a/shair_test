@@ -2,32 +2,51 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
 import { makeStyles } from "@mui/styles"
-import { Box, FormControl, FilledInput, InputAdornment } from "@mui/material"
+import { Box, FormControl, FilledInput, InputAdornment, Slider, Card, CardContent, Typography, CardMedia, Grid } from "@mui/material"
+import { Search } from "@mui/icons-material";
+
+import logo from "../img/CarSHAiR-Logo.png"
+import car1 from "../img/car_1.jpeg"
 
 const useStyles = makeStyles(() => ({
     root: {
-      height: "100vh",
+      width: "100%",
       display: 'flex',
-      justifyContent: 'center'
+      flexDirection: 'column',
+      alignItems: 'center'      
     },
-    filterPaper: {
-        width: "400px",
-        height: "600px",
-        padding: "30",
-    }
+
+    filledInput: {
+      height: 50,
+      width: 300,
+      borderRadius: 5,
+      fontSize: 15,
+      fontWeight: "bold",
+      letterSpacing: 0,
+      marginBottom: 20,      
+    },
+    
+    vehicleCard: {
+      padding: 10
+    },
+
+    typo: {
+      background: "#E9EEF9",
+    },
+
+    image: {
+      width: "100%"
+    },
+    
+    
 }));
 
 const CarList = (props) => {
 
     const [searchTerm, setSearchTerm] = useState("");
-
     const { vehicleList } = props
 
     const classes = useStyles();
-    
-    const handleSubmit = (event) => {
-        event.preventDefault();
-      };
     
     const handleChange = (event) => {
         event.preventDefault();
@@ -35,33 +54,39 @@ const CarList = (props) => {
       };
     
     console.log(props.vehicleList)
+    
     if(props.vehicleList) {
-    return (
-    
-    <Box>
-        <form onSubmit={handleSubmit}>
-            <FormControl fullWidth hiddenLabel>
-                <FilledInput
-                name="search"
-                onChange={handleChange}
-                classes={{ root: classes.filledInput, input: classes.input }}
-                disableUnderline
-                placeholder="Search"
-                startAdornment={
-                    <InputAdornment position="start">
-                    </InputAdornment>
-                }></FilledInput>
-            </FormControl>
-        </form>
-        {vehicleList
-            .filter((vehicle) => vehicle.Model_Name.toLowerCase().includes(searchTerm))
-            .map((vehicle) => {
-            return <h3>{vehicle.Model_Name}</h3>
-        })}
-    </Box>
-    
-    )}
-    return <h3>loading vehicle</h3>
+      return (
+          <Box className={classes.root}>
+            
+            <FilledInput
+                  classes={{ root: classes.filledInput }}
+                  name="search"
+                  onChange={handleChange}
+                  disableUnderline
+                  placeholder="Search by Model Name"
+                  startAdornment={
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                  }>
+            </FilledInput>
+          
+          <Grid container spacing={2}>
+            {vehicleList
+                .filter((vehicle) => vehicle.Model_Name.toLowerCase().includes(searchTerm))
+                .map(vehicle => (
+                  <Grid xs={12} md={6} className={classes.vehicleCard}>
+                      <img className={classes.image} src={car1}/>
+                      <Typography className={classes.typo}>
+                            {vehicle.Make_Name} <strong>{vehicle.Model_Name}</strong>
+                      </Typography>
+                  </Grid> 
+            ))}
+          </Grid>
+        </Box>
+      
+      )}    
 }
 
 const mapStateToProps = (state) => {

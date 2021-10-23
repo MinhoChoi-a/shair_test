@@ -3,134 +3,141 @@ import { connect } from "react-redux";
 
 import { initializeOptions, getType, fetchCarList } from "../store/utils/dataCreator";
 
-import { Box, Paper, FormControl, Slider, Autocomplete, TextField, Button } from "@mui/material"
+import { Box, Paper, FormControl, Slider, Autocomplete, TextField, Button, Typography,ButtonUnstyled } from "@mui/material"
 import { makeStyles } from "@mui/styles"
 
+import PaperComp from "./PaperComp"
 import CarList from "./CarList"
+import logo from "../img/CarSHAiR-Logo.png"
 
 const useStyles = makeStyles(() => ({
     root: {
-      height: "100vh",
+      height: '100vh',
       display: 'flex',
       justifyContent: 'center'
     },
+    top: {
+        width: '100%',
+        height: "100px",
+        position: "fixed",
+        margin: 0,
+        top: 0,
+        zIndex: 10,
+        display: 'flex',
+        justifyContent: 'center',
+        padding: 10
+    },
+    filterBox: {
+        position:'absolute',
+        height:'100%',
+        width:'100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 9,
+        background: 'rgba(0, 0, 0, 0.5)'
+    },
+    label: {
+        marginTop: 20
+    },
     filterPaper: {
-        width: "400px",
-        height: "600px",
-        padding: "30",
+        display: 'grid',
+        maxWidth: "450px",
+        minWidth: "350px",
+        height: "400px",
+        textAlign: "center",
+        padding: 10
+    },
+    filterTitle: {
+        justifySelf: 'center',
+        marginTop: 20
+    },
+    filterContent: {
+        justifySelf: 'center'
+    },
+    sliderLabel: {
+        margin:0,
+        padding:0
+    },
+    sliderBox: {
+        display: 'flex',     
+        flexDirection: 'column',
+        alignContent: 'center'   
+    },
+
+    filterButtonBox: {
+        position: "fixed",
+            height: "70px",
+            width: "70px",
+            bottom: 0,
+            right: 0,
+            marginBottom: '20px',
+            marginRight: '10px',
+            zIndex: 8,        
+        "@media (min-width: 700px)": {
+            top: 0,
+            marginTop: '150px',
+            marginRight: '100px'
+        }
+    },
+
+    filterButton: {
+        width: '100%',
+        height: '100%'        
+    },
+
+    carList: {
+        marginTop: '150px',        
+        width: '80%',
     }
+    
 }));
 
 const List = (props) => {
 
     const classes = useStyles();
 
-    const { options, vehicleList, initializeOptions, getType, fetchCarList } = props
+    const { options, initializeOptions } = props
     
-    const [filterYear, setFilterYear] = useState(2010);
-    const [filterMake, setFilterMake] = useState("ASTON MARTIN");
-    const [filterType, setFilterType] = useState("All");
-
     const [filterPaper, setFilterPaper] = useState(true);
 
     useEffect(() => {
         initializeOptions()       
     }, []);
 
-    const updateTypeList = async (event) => {
-        
-        await getType(event.target.textContent);
-        setFilterMake(event.target.textContent);        
-     
-    }
-
-    const searchVehicles = async (event) => {
-        event.preventDefault();
-
-        const option = {
-            type: filterType,
-            year: filterYear,
-            make: filterMake
-        }
-
-        await fetchCarList(option)
-        setFilterPaper(!filterPaper);
-    }
-
-    console.log(options);
-    console.log(vehicleList);
-
-    if(options.make) {
-    
         return (
             <Box className={classes.root}>
                 
-                <Paper className={classes.filterPaper} style={{display: filterPaper? 'block' : 'none'}} elevation={3}>
-                        <Box width={300} style={{padding:30}}>
-                                <Slider
-                                    aria-label="Default"
-                                    defaultValue={2010}
-                                    valueLabelDisplay="auto"
-                                    min={options.year[0]}
-                                    max={options.year[1]}
-                                    onChange={(event, newValue) => {
-                                        setFilterYear(newValue);
-                                    }}
-                                />
-                            </Box>
-                            <Box>
-                                <Autocomplete
-                                    value={filterMake}
-                                    onChange={updateTypeList}
-                                    disablePortal
-                                    id="combo-box-demo"                                
-                                    options={options.make}                                
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Maker" />}
-                                />
-                            </Box>
-                            <Box>
-                                <Autocomplete
-                                    value={filterType}
-                                    onChange={(event, newValue) => {
-                                        setFilterType(newValue);
-                                    }}
-                                    disablePortal
-                                    id="combo-box-demo"                                
-                                    options={options.type}                                
-                                    sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Type" />}
-                                />
-                            </Box>
-                            <Button variant="contained" color="success"
-                                    onClick={searchVehicles}
-                            >
-                                Search
-                            </Button>
+                <Paper className={classes.top} style={{backgroundColor: 'black'}} elevation={3}>
+                    <img src= {logo}/>
                 </Paper>
-                <Button variant="contained" color="success"
-                    onClick={() => setFilterPaper(!filterPaper)}
-                >
-                FILTER
-                </Button>
-                <CarList/>
-            </Box>
-            
-        )
-    }
+                
+                <Box className={classes.filterBox} style={{display: filterPaper? 'flex' : 'none'}} >
+                        <Paper className={classes.filterPaper} elevation={3}>
+                             {options.make? 
+                                <PaperComp filterPaper={filterPaper} setFilterPaper={setFilterPaper}/> : 
+                                <h3>Data loading...</h3> }
+                        </Paper>                            
+                </Box>
 
-    return (
-    
-    <h3>loading</h3>
-    
-    )
-    
+                <Box className={classes.carList}>
+                    <CarList/>
+                </Box>
+
+                <Box className={classes.filterButtonBox}>
+                    <Button className={classes.filterButton} variant="contained" 
+                    onClick={() => setFilterPaper(!filterPaper)}>
+                        FILTER
+                    </Button>                
+                </Box>
+            
+            </Box>
+        )   
 }
 
 const mapStateToProps = (state) => {
     return {
-      options: state.options,
-      vehicleList: state.searchResult
+      options: state.options
     };
 };
 
@@ -138,12 +145,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         initializeOptions:() => {
         dispatch(initializeOptions());
-      },
-        getType:(make) => {
-        dispatch(getType(make));
-      },
-        fetchCarList:(option) => {
-        dispatch(fetchCarList(option))
       }
     };
 };

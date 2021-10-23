@@ -21,12 +21,12 @@ export const fetchCarList = (option) => async (dispatch) => {
 
 
     if(option.make === "All" && option.year === "All") {
-        make = "/getmodelsformake/" + option.make
+        make = "/getmodelsformakeId/" + option.make
     }
 
     else {
 
-        make = "/getmodelsformakeyear/make/"+option.make;
+        make = "/getmodelsformakeIdyear/makeId/"+option.make;
         
         year = "/modelyear/"+option.year;
         
@@ -52,14 +52,18 @@ export const fetchCarList = (option) => async (dispatch) => {
 
 export const initializeOptions = () => async (dispatch) => {
 
-    console.log("check check");
-    
     const make = await axios.get(API_BASE_URL+"/getallmakes?format=json");
     
-    const type = await axios.get(API_BASE_URL+"/GetVehicleTypesForMake/ASTON MARTIN?format=json");
+    const type = await axios.get(API_BASE_URL+"/GetVehicleTypesForMakeId/440?format=json");
     
     const make_list = make.data.Results.map((obj) => {
-        return obj.Make_Name;
+        return obj.Make_Name
+    })
+
+    console.log(make.data.Results);
+
+    const makeId_list = make.data.Results.map((obj) => {
+        return obj.Make_ID
     })
     
     const type_list = type.data.Results.map((obj) => {
@@ -68,6 +72,7 @@ export const initializeOptions = () => async (dispatch) => {
 
     const options = {
         make: make_list,
+        makeId_list: makeId_list,
         year: YEAR_RANGE,
         type: ["All", ...type_list]
     }    
@@ -76,8 +81,8 @@ export const initializeOptions = () => async (dispatch) => {
 }
 
 export const getType = (make) => async (dispatch) => {
-
-    const { data } = await axios.get(API_BASE_URL+"/GetVehicleTypesForMake/"+make+"?format=json")
+    
+    const { data } = await axios.get(API_BASE_URL+"/GetVehicleTypesForMakeId/"+make+"?format=json")
 
     const type_list = data.Results.map((obj) => {
         return obj.VehicleTypeName
