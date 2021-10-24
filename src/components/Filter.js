@@ -54,6 +54,9 @@ const Filter = (props) => {
       await getType(value.Make_ID);
       setFilterMake(value.Make_ID);
       setFilterType("All");
+    } else {
+      setFilterMake(0);
+      setFilterType("All");
     }
   };
 
