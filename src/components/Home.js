@@ -94,7 +94,9 @@ const List = (props) => {
             <Box className={classes.selectedFilterBox}>
               <Box>
                 <Typography className={classes.selectedFilter}>
-                  MAKER <strong>{searchResult[0].Make_Name}</strong> / YEAR{" "}
+                  MAKER <strong>{(searchResult[0].Make_Name.length > 13) ? 
+                    searchResult[0].Make_Name.substring(0,11)+"..." 
+                    :searchResult[0].Make_Name}</strong> / YEAR{" "}
                   <strong>{filterOption.year}</strong> /{" "}
                 </Typography>
               </Box>
