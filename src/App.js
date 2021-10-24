@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 
 import Routes from "./routes";
-import { theme } from "./theme/theme"
+import { theme } from "./theme/theme";
 
 function App() {
   return (

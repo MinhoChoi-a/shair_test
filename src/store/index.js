@@ -1,12 +1,12 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createStore, applyMiddleware, combineReducers } from "redux";
 import thunkMiddleware from "redux-thunk";
 
-import options from './options'
-import searchResult from './searchResult'
+import options from "./options";
+import searchResult from "./searchResult";
 
 const appReducer = combineReducers({
-    options,
-    searchResult    
-  });
+  options,
+  searchResult,
+});
 
-export default createStore(appReducer, applyMiddleware(thunkMiddleware))
+export default createStore(appReducer, applyMiddleware(thunkMiddleware));
