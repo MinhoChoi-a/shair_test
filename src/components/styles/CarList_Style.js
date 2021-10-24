@@ -29,6 +29,17 @@ const CarList_Style = makeStyles(() => ({
     alignItems: "center",
     justifyContent: "center",
   },
+
+  loading: {
+    width: "100%",
+  },
+
+  circular: {
+    marginTop: 10,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 
 export default CarList_Style;

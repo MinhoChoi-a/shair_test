@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getCarList, removeFilter } from "../searchResult";
+import { getCarList } from "../searchResult";
 
 import { getOptions, updateType } from "../options";
 
@@ -26,18 +26,17 @@ export const fetchCarList = (option) => async (dispatch) => {
 
   const API_URL = API_BASE_URL + make + year + type + "?format=json";
 
-  console.log(API_URL);
-
   try {
     const { data } = await axios.get(API_URL);
-    dispatch(getCarList([...data.Results]));
+    if (data.Results.length > 0) {
+      dispatch(getCarList([...data.Results]));
+    } else {
+      dispatch(getCarList(null));
+    }
   } catch (error) {
     console.error(error);
   }
 };
-
-//I think we can just use the fetchCarList method for this case
-//export const fetchCarList = (options) => async (dispatch) => {
 
 export const initializeOptions = () => async (dispatch) => {
   const make = await axios.get(API_BASE_URL + "/getallmakes?format=json");
@@ -49,8 +48,6 @@ export const initializeOptions = () => async (dispatch) => {
   const make_list = make.data.Results.map((obj) => {
     return obj.Make_Name;
   });
-
-  console.log(make.data.Results);
 
   const makeId_list = make.data.Results.map((obj) => {
     return obj.Make_ID;

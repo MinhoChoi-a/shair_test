@@ -14,12 +14,6 @@ import {
 } from "@mui/material";
 import Filter_Style from "./styles/Filter_Style";
 
-function sleep(delay = 0) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-}
-
 const Filter = (props) => {
   const classes = Filter_Style();
 
@@ -40,13 +34,9 @@ const Filter = (props) => {
       return undefined;
     }
 
-    (async () => {
-      await sleep(1e3); // For demo purposes.
-
-      if (active) {
-        setOption([...options.make]);
-      }
-    })();
+    if (active) {
+      setOption([...options.make]);
+    }
 
     return () => {
       active = false;
@@ -74,7 +64,7 @@ const Filter = (props) => {
   const searchVehicles = async (event) => {
     event.preventDefault();
 
-    if (filterMake == 0) {
+    if (filterMake === 0) {
       props.setErrorMessage("Please select the Maker");
       props.openAlert();
     } else {

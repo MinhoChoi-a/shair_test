@@ -11,7 +11,7 @@ const Home_Style = makeStyles(() => ({
     height: "100%",
     position: "fixed",
     margin: 0,
-    top: 0,    
+    top: 0,
   },
   title: {
     height: "100px",
@@ -23,14 +23,14 @@ const Home_Style = makeStyles(() => ({
     paddingTop: 20,
     paddingBottom: 20,
     "@media (max-width: 500px)": {
-        height: "50px"        
-      },
+      height: "50px",
+    },
   },
   image: {
     height: "auto",
     "@media (max-width: 500px)": {
-        width: "190px",
-        height: "50px"        
+      width: "190px",
+      height: "50px",
     },
   },
   filterBar: {
@@ -112,6 +112,17 @@ const Home_Style = makeStyles(() => ({
     height: "400px",
     textAlign: "center",
     padding: 10,
+  },
+
+  loading: {
+    width: "100%",
+  },
+
+  circular: {
+    marginTop: 10,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
   },
 
   carList: {

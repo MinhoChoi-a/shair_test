@@ -11,9 +11,8 @@ import {
   Alert,
   Input,
   Typography,
-  FilledInput,
   InputAdornment,
-  Container,
+  CircularProgress,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
@@ -61,13 +60,11 @@ const List = (props) => {
     }
   };
 
-  console.log(searchResult);
-
   return (
     <Box className={classes.root}>
       <Box className={classes.top}>
         <Box className={classes.title}>
-          <img className={classes.image} src={logo} />
+          <img className={classes.image} src={logo} alt="logo_image" />
         </Box>
         <Box className={classes.filterBar}>
           <Box className={classes.searchBar}>
@@ -93,7 +90,7 @@ const List = (props) => {
               </Button>
             </Box>
           </Box>
-          {searchResult.length > 0 ? (
+          {(searchResult && searchResult.length) > 0 ? (
             <p className={classes.selectedFilter}>
               MAKER <strong>{searchResult[0].Make_Name}</strong> / YEAR{" "}
               <strong>{filterOption.year}</strong> / TYPE{" "}
@@ -119,7 +116,12 @@ const List = (props) => {
               setErrorMessage={setErrorMessage}
             />
           ) : (
-            <h3>Data loading...</h3>
+            <Box className={classes.loding}>
+              <h3>loading...</h3>
+              <Box className={classes.circular}>
+                <CircularProgress color="inherit" size={40} />
+              </Box>
+            </Box>
           )}
         </Paper>
       </Box>

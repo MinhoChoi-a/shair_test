@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid, CircularProgress } from "@mui/material";
 
 import CarList_Style from "./styles/CarList_Style";
 
@@ -12,7 +12,7 @@ const CarList = (props) => {
 
   const { vehicleList, searchTerm } = props;
 
-  if (vehicleList.length > 0) {
+  if ((vehicleList && vehicleList.length) > 0) {
     return (
       <Box className={classes.root}>
         <Grid container>
@@ -28,7 +28,7 @@ const CarList = (props) => {
                 className={classes.vehicleCard}
                 key={vehicle.Model_ID}
               >
-                <img className={classes.image} src={car1} />
+                <img className={classes.image} src={car1} alt="car_image" />
                 <Typography className={classes.typo}>
                   {vehicle.Make_Name} <strong>{vehicle.Model_Name}</strong>
                 </Typography>
@@ -39,10 +39,20 @@ const CarList = (props) => {
     );
   }
 
-  console.log("return");
+  console.log(vehicleList);
+
   return (
     <Box className={classes.noData}>
-      <Typography>NO RESULTS</Typography>
+      {vehicleList ? (
+        <Box className={classes.loding}>
+          <Typography>Loading...</Typography>
+          <Box className={classes.circular}>
+            <CircularProgress color="inherit" size={40} />
+          </Box>
+        </Box>
+      ) : (
+        <Typography>No Results</Typography>
+      )}
     </Box>
   );
 };
