@@ -49,14 +49,10 @@ const Filter = (props) => {
     }
   }, [open]);
 
-  const updateTypeList = async (event) => {
-    var index = event.target.attributes[3].nodeValue;
-
-    if (index !== "text") {
-      var id = options.makeId_list[index];
-
-      await getType(id);
-      setFilterMake(id);
+  const updateTypeList = async (event, value) => {
+    if (value) {
+      await getType(value.Make_ID);
+      setFilterMake(value.Make_ID);
       setFilterType("All");
     }
   };
@@ -67,23 +63,30 @@ const Filter = (props) => {
     if (filterMake === 0) {
       props.setErrorMessage("Please select the Maker");
       props.openAlert();
-    } else {
-      const option = {
-        type: filterType,
-        year: filterYear,
-        make: filterMake,
-      };
-
-      await fetchCarList(option);
-      document.body.style.overflow = "auto";
-
-      if (filterType === "Multipurpose Passenger Vehicle (MPV)") {
-        option.type = "MPV";
-      }
-
-      setFilterOption(option);
-      props.setFilterPaper(!props.filterPaper);
+      return;
     }
+
+    if (!filterType) {
+      props.setErrorMessage("Please select the Type");
+      props.openAlert();
+      return;
+    }
+
+    const option = {
+      type: filterType,
+      year: filterYear,
+      make: filterMake,
+    };
+
+    await fetchCarList(option);
+    document.body.style.overflow = "auto";
+
+    if (filterType === "Multipurpose Passenger Vehicle (MPV)") {
+      option.type = "MPV";
+    }
+
+    setFilterOption(option);
+    props.setFilterPaper(!props.filterPaper);
   };
 
   return (
@@ -101,10 +104,10 @@ const Filter = (props) => {
           setOpen(false);
         }}
         loading={loading}
-        onInputChange={updateTypeList}
-        disablePortal
-        id="combo-box"
+        onChange={updateTypeList}
+        id="combo-box1"
         options={option}
+        getOptionLabel={(option) => option.Make_Name}
         sx={{ width: 300 }}
         renderInput={(params) => (
           <TextField
@@ -130,8 +133,7 @@ const Filter = (props) => {
         onChange={(event, newValue) => {
           setFilterType(newValue);
         }}
-        disablePortal
-        id="combo-box"
+        id="combo-box2"
         options={options.type}
         sx={{ width: 300 }}
         renderInput={(params) => <TextField {...params} label="Type" />}

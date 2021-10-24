@@ -1,3 +1,5 @@
+//global sate for the filter option
+
 import { updateVehicleType } from "./reducers/reducers";
 
 const GET_OPTIONS = "GET_OPTIONS";

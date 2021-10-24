@@ -7,21 +7,18 @@ import { getOptions, updateType } from "../options";
 const API_BASE_URL = "https://vpic.nhtsa.dot.gov/api/vehicles";
 const YEAR_RANGE = [2001, 2021];
 
+//get the car list based on filter option
 export const fetchCarList = (option) => async (dispatch) => {
   let year = "";
   let type = "";
   let make = "";
 
-  if (option.make === "All" && option.year === "All") {
-    make = "/getmodelsformakeId/" + option.make;
-  } else {
-    make = "/getmodelsformakeIdyear/makeId/" + option.make;
+  make = "/getmodelsformakeIdyear/makeId/" + option.make;
 
-    year = "/modelyear/" + option.year;
+  year = "/modelyear/" + option.year;
 
-    if (option.type !== "All") {
-      type = "/vehicleType/" + option.type;
-    }
+  if (option.type !== "All") {
+    type = "/vehicleType/" + option.type;
   }
 
   const API_URL = API_BASE_URL + make + year + type + "?format=json";
@@ -31,7 +28,7 @@ export const fetchCarList = (option) => async (dispatch) => {
     if (data.Results.length > 0) {
       dispatch(getCarList([...data.Results]));
     } else {
-      dispatch(getCarList(null));
+      dispatch(getCarList(null)); //empty result
     }
   } catch (error) {
     console.error(error);
@@ -45,21 +42,12 @@ export const initializeOptions = () => async (dispatch) => {
     API_BASE_URL + "/GetVehicleTypesForMakeId/440?format=json"
   );
 
-  const make_list = make.data.Results.map((obj) => {
-    return obj.Make_Name;
-  });
-
-  const makeId_list = make.data.Results.map((obj) => {
-    return obj.Make_ID;
-  });
-
   const type_list = type.data.Results.map((obj) => {
     return obj.VehicleTypeName;
   });
 
   const options = {
-    make: make_list,
-    makeId_list: makeId_list,
+    make: make.data.Results,
     year: YEAR_RANGE,
     type: ["All", ...type_list],
   };
