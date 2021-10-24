@@ -41,7 +41,7 @@ const Filter = (props) => {
     return () => {
       active = false;
     };
-  }, [loading]);
+  }, [loading, options.make]);
 
   useEffect(() => {
     if (!open) {

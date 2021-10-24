@@ -39,8 +39,6 @@ const CarList = (props) => {
     );
   }
 
-  console.log(vehicleList);
-
   return (
     <Box className={classes.noData}>
       {vehicleList ? (

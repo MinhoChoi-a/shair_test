@@ -42,7 +42,7 @@ const List = (props) => {
 
   useEffect(() => {
     initializeOptions();
-  }, []);
+  }, [initializeOptions]);
 
   const handleFilterPaper = () => {
     document.body.style.overflow = "hidden";
