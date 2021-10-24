@@ -25,7 +25,7 @@ export const theme = createTheme({
         root: {
           backgroundColor: '#d6d6d6'
         },
-      },
+      },      
     },
     MuiButton: {
       styleOverrides: {

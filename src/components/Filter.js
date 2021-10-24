@@ -1,125 +1,99 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 
-import { initializeOptions, getType, fetchCarList } from "../store/utils/dataCreator";
+import { getType, fetchCarList } from "../store/utils/dataCreator";
 
-import { Box, Paper, FormControl, Slider, Autocomplete, TextField, Button, Typography,ButtonUnstyled } from "@mui/material"
-import { makeStyles } from "@mui/styles"
+import { Box, Slider, Autocomplete, TextField, Button, Typography, CircularProgress } from "@mui/material"
+import Filter_Style from "./styles/Filter_Style";
 
-import CarList from "./CarList"
-import logo from "../img/CarSHAiR-Logo.png"
+function sleep(delay = 0) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, delay);
+    });
+  }
 
-const useStyles = makeStyles(() => ({
-    root: {
-      height: '100vh',
-      display: 'flex'
-    },
-    top: {
-        width: '100%',
-        height: "100px",
-        position: "fixed",
-        margin: 0,
-        top: 0,
-        zIndex: 10,
-        display: 'flex',
-        justifyContent: 'center',
-        padding: 10
-    },
-    filterBox: {
-        position:'absolute',
-        height:'100%',
-        width:'100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 9,
-        background: 'rgba(0, 0, 0, 0.5)'
-    },
-    label: {
-        marginTop: 20
-    },
-    filterPaper: {
-        display: 'grid',
-        width: "100%",
-        height: "100%",
-        textAlign: "center"
-    },
-    filterTitle: {
-        justifySelf: 'center',
-        marginTop: 20
-    },
-    filterContent: {
-        justifySelf: 'center'
-    },
-    sliderLabel: {
-        margin:0,
-        padding:0
-    },
-    sliderBox: {
-        display: 'flex',     
-        flexDirection: 'column',
-        alignContent: 'center'   
-    },
+const Filter = (props) => {
 
-    filterButtonBox: {
-        position: "fixed",
-        top: 0,
-        right: 0,
-        marginTop: '150px',
-        marginRight: '100px',
-        height: "70px",
-        width: "70px",
-        zIndex: 8       
-    },
+    const classes = Filter_Style();
 
-    filterButton: {
-        width: '100%',
-        height: '100%'        
-    },
-
-    carList: {
-        marginTop: '100px',
-        padding: 50,        
-        width: '100%'
-    }
-    
-}));
-
-const PaperComp = (props) => {
-
-    const classes = useStyles();
-
-    const { options, vehicleList, initializeOptions, getType, fetchCarList } = props
+    const { options, getType, fetchCarList, setFilterOption } = props
     
     const [filterYear, setFilterYear] = useState(2010);
     const [filterMake, setFilterMake] = useState(0);
     const [filterType, setFilterType] = useState("All");
 
+    const [open, setOpen] = useState(false);
+    const [option, setOption] = useState([]);
+    const loading = open && option.length === 0;
+
+    useEffect(() => {
+        let active = true;
+
+        if (!loading) {
+        return undefined;
+        }
+
+        (async () => {
+        await sleep(1e3); // For demo purposes.
+
+        if (active) {
+            setOption([...options.make]);
+        }
+        })();
+
+        return () => {
+        active = false;
+        };
+    }, [loading]);
+
+    useEffect(() => {
+        if (!open) {
+        setOption([]);
+        }
+    }, [open]);
+
     const updateTypeList = async (event) => {
 
         var index = event.target.attributes[3].nodeValue
-        
+
+        if(index !== "text") {
         var id = options.makeId_list[index]
 
         await getType(id);
         setFilterMake(id);        
         setFilterType("All");
+        }
     }
 
     const searchVehicles = async (event) => {
         event.preventDefault();
-
+        
+        if(filterMake == 0){
+            props.setErrorMessage("Please select the Maker")
+            props.openAlert()
+        }
+        
+        else {        
+        
         const option = {
             type: filterType,
             year: filterYear,
             make: filterMake
         }
-
+        
         await fetchCarList(option)
+        document.body.style.overflow = 'auto';
+        
+        if(filterType === "Multipurpose Passenger Vehicle (MPV)") {
+            option.type = "MPV"
+        }
+
+        setFilterOption(option);
         props.setFilterPaper(!props.filterPaper);
+        }
     }
 
-    console.log(options)
+    
 
         return (
             <Box className={classes.filterPaper}>
@@ -129,12 +103,30 @@ const PaperComp = (props) => {
                                 </Typography>  
                             </Box>
                                 <Autocomplete className={classes.filterContent}
-                                    onChange={updateTypeList}
+                                    open={open}
+                                    onOpen={() => {setOpen(true);}}
+                                    onClose={() => {setOpen(false);}}
+                                    loading={loading}
+                                    
+                                    onInputChange={updateTypeList}
                                     disablePortal
                                     id="combo-box"                                
-                                    options={options.make}                                
+                                    options={option}                                                                    
                                     sx={{ width: 300 }}
-                                    renderInput={(params) => <TextField {...params} label="Maker" />}
+                                    
+                                    renderInput={(params) => <TextField {...params} label="Maker"
+                                    
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        endAdornment: (
+                                          <Box>
+                                            {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                            {params.InputProps.endAdornment}
+                                          </Box>
+                                        ),
+                                    }}
+                                    />
+                                }
                                 />
                                 <Autocomplete className={classes.filterContent}
                                     value={filterType}
@@ -190,5 +182,5 @@ const mapDispatchToProps = (dispatch) => {
     };
 };
   
-export default connect(mapStateToProps, mapDispatchToProps)(PaperComp);
+export default connect(mapStateToProps, mapDispatchToProps)(Filter);
   
