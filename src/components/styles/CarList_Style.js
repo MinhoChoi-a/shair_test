@@ -13,7 +13,7 @@ const CarList_Style = makeStyles(() => ({
   },
 
   typo: {
-    background: "#E9EEF9",
+    background: "#d6d6d6",
     padding: 10,
   },
 
