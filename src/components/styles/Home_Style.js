@@ -22,12 +22,16 @@ const Home_Style = makeStyles(() => ({
     justifyContent: "center",
     paddingTop: 20,
     paddingBottom: 20,
-    "@media (max-width: 700px)": {
+    "@media (max-width: 500px)": {
         height: "50px"        
       },
   },
   image: {
-    height: "auto"
+    height: "auto",
+    "@media (max-width: 500px)": {
+        width: "190px",
+        height: "50px"        
+    },
   },
   filterBar: {
     width: "100%",
