@@ -23,6 +23,9 @@ const Home_Style = makeStyles(() => ({
         paddingTop: 20,
         paddingBottom: 20
     },
+    image: {
+        maxWidth: "350px",
+    },
     filterBar: {
         width: '100%',      
         zIndex: 7,
