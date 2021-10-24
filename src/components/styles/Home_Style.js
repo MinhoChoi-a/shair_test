@@ -8,10 +8,10 @@ const Home_Style = makeStyles(() => ({
   },
   top: {
     width: "100%",
-    height: "180px",
+    height: "100%",
     position: "fixed",
     margin: 0,
-    top: 0,
+    top: 0,    
   },
   title: {
     height: "100px",
@@ -22,6 +22,9 @@ const Home_Style = makeStyles(() => ({
     justifyContent: "center",
     paddingTop: 20,
     paddingBottom: 20,
+    "@media (max-width: 700px)": {
+        height: "50px"        
+      },
   },
   image: {
     maxWidth: "400px",
