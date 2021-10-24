@@ -59,7 +59,7 @@ const List = (props) => {
 
                 <Box className={classes.top}>
                     <Box className={classes.title}>
-                        <img src= {logo}/>
+                        <img className={classes.image} src= {logo}/>
                     </Box>
                     <Box className={classes.filterBar}>
                         <Box className={classes.searchBar}>
