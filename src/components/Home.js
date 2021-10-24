@@ -100,9 +100,9 @@ const List = (props) => {
                   <strong>{filterOption.year}</strong> /{" "}
                 </Typography>
               </Box>
-              <Box>
+              <Box className={classes.selectedFilterRight}>
                 <Typography className={classes.selectedFilter}>
-                  TYPE <strong>{filterOption.type}</strong>
+                   TYPE <strong>{filterOption.type}</strong>
                 </Typography>
               </Box>
             </Box>

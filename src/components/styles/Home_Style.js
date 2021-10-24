@@ -95,9 +95,17 @@ const Home_Style = makeStyles(() => ({
   },
 
   selectedFilter: {
-    paddingLeft: 10,
-    paddingRight: 10,
     margin: 0,
+    "@media (max-width: 500px)": {
+        paddingLeft: 10,
+        paddingRight: 10,   
+    },
+  },
+  selectedFilterRight: {
+    marginLeft: 5,
+    "@media (max-width: 500px)": {
+        margin:0,
+    },
   },
 
   filterBox: {
