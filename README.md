@@ -2,12 +2,13 @@
 
 Developer: MINHO CHOI
 
-## Available Scripts
+## How to run
 
 In the project directory, you can run:
 
 1. npm install
 2. npm start
+3. check the localhost:3000 on the browser
 
 ## Stacks
 
