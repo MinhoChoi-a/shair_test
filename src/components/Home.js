@@ -91,11 +91,19 @@ const List = (props) => {
             </Box>
           </Box>
           {(searchResult && searchResult.length) > 0 ? (
-            <p className={classes.selectedFilter}>
-              MAKER <strong>{searchResult[0].Make_Name}</strong> / YEAR{" "}
-              <strong>{filterOption.year}</strong> / TYPE{" "}
-              <strong>{filterOption.type}</strong>
-            </p>
+            <Box className={classes.selectedFilterBox}>
+              <Box>
+                <Typography className={classes.selectedFilter}>
+                  MAKER <strong>{searchResult[0].Make_Name}</strong> / YEAR{" "}
+                  <strong>{filterOption.year}</strong> /{" "}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography className={classes.selectedFilter}>
+                  TYPE <strong>{filterOption.type}</strong>
+                </Typography>
+              </Box>
+            </Box>
           ) : (
             <Typography></Typography>
           )}

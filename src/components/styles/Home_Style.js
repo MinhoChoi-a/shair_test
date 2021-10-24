@@ -84,12 +84,20 @@ const Home_Style = makeStyles(() => ({
     width: "100%",
     height: "100%",
   },
-  selectedFilter: {
-    fontSize: 20,
-    "@media (max-width: 700px)": {
-      fontSize: 14,
-      margin: 0,
+  selectedFilterBox: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    "@media (max-width: 500px)": {
+      flexDirection: "column",
     },
+  },
+
+  selectedFilter: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    margin: 0,
   },
 
   filterBox: {
@@ -128,6 +136,9 @@ const Home_Style = makeStyles(() => ({
   carList: {
     marginTop: "250px",
     width: "80%",
+    "@media (max-width: 500px)": {
+      marginTop: "210px",
+    },
   },
   snackbark: {
     width: "100%",
