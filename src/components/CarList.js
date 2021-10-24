@@ -20,7 +20,7 @@ const CarList = (props) => {
             {vehicleList
                 .filter((vehicle) => vehicle.Model_Name.toLowerCase().includes(searchTerm))
                 .map(vehicle => (
-                  <Grid xs={12} md={6} className={classes.vehicleCard}>
+                  <Grid item={true} xs={12} md={6} className={classes.vehicleCard} key={vehicle.Model_ID}>
                       <img className={classes.image} src={car1}/>
                       <Typography className={classes.typo}>
                             {vehicle.Make_Name} <strong>{vehicle.Model_Name}</strong>
