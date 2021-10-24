@@ -24,8 +24,7 @@ const Home_Style = makeStyles(() => ({
         paddingBottom: 20
     },
     image: {
-        width: "auto",
-        height: "auto"
+        maxWidth: "400px"
     },
     filterBar: {
         width: '100%',      
@@ -103,7 +102,7 @@ const Home_Style = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',        
         maxWidth: "450px",
-        minWidth: "350px",
+        minWidth: "300px",
         height: "400px",
         textAlign: "center",
         padding: 10
